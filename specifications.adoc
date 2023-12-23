@@ -1,0 +1,63 @@
+![](https://velog.velcdn.com/images/patientia/post/71599866-3d0b-4fb6-a865-702587e4a477/image.png)
+
+
+## 1. why method specifiaction
+
+method specification : method의 사용 설명서
+
+method specification은 client, implementor 모두에게 이점이 있다.
+client : specification만 읽어도 method 동작과 조건을 이해할 수있다.
+implementor : specification을 만족하는한 코드를 자유롭게 변경할 수 있다.
+specification을 사용하면 client와 implementor 양측이 **독립적인 작업**을 가능하게 해준다.
+그러니까 '방화벽' 역할을 하는 셈이다.
+
+## 2. specification structure
+
+2가지가 있다.
+1. precondition
+2. postcondition
+
+precondition은 client의 의무이다. 예시) parameter 값은 양수이다, null이 아니다.
+postcondition은 method implementor의 의무이다. 
+precondition이 참이면 postcondition또한 참이어야 한다. 
+
+sum이라는 method를 예시로 들면
+```
+public int sum(int a, int b)
+   precondition: 양수값 a, b
+   postcondition : a, b의 합을 반환한다.
+```
+
+매개변수 a,b가 양수값이 입력되면
+a + b의 합이 반환된다.
+
+## 3. specification in java
+
+java는 javadoc를 사용하여 specification을 작성한다.
+
+precondition은 @param
+
+ostcondition은 @return 및 @Throw절을 사용한다.
+
+위의 예시를 javadoc으로 작성해보았다.
+
+```
+public int sum(int a, int b)
+   precondition: 양수값 a, b
+   postcondition : a, b의 합을 반환한다.
+```
+
+```
+/**
+* a, b의 합을 계산한다.
+* @param a 첫번째 피연산자, 양수를 입력해야 한다.
+* @param b 두번째 피연산자, 양수를 입력해야 한다.
+* @return a + b의 합을 반환한다.
+*/
+int sum(int a, int b)
+```
+
+거듭 말하지만 code의 구현부를 보지 않아도
+specification으로 코드의 동작을 파악할 수 있다.
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/06-specifications/specs/
