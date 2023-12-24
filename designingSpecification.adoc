@@ -24,8 +24,8 @@ operational spec을 쓰게 되면 implementor가 이후 구현 변경이 쉽지 
 
 강한 spec은 기존 spec에 비해 precondition이 약하거나, postcondition이 강한 코드를 의미한다.
 
-참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/07-designing-specs/#deterministic_vs_underdetermined_specs
-
 강한 spec은 약한 스펙을 만족 시키기때문에 대체할 수있다.
 
 적절히 약한 명세는 implementor에게 자유를, 적절히 강한 명세는 client에게 자유를 준다.
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/07-designing-specs/#deterministic_vs_underdetermined_specs
