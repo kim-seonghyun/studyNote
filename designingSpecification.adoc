@@ -1,0 +1,31 @@
+## underdetermined, nondeterminisim 차이점
+
+deterministic spec은 입력에 대한 하나의 출력이 존재한다.
+
+여기서 underdetermined, nondetermined를 구분할 필요가있다.
+
+underdeterministic spec은 입력에 대해서 여러 유효한 출력을 허용한다.
+
+nondetermined spec은 동일한 입력이라도 프로세스 상태나 타이밍에 따라 가끔 다른 방식으로 동작한다.
+
+## declaritive , operational spec
+
+declaritive spec은 세부사항이 아닌 초기상태와 최종결과의 관계를 표현한다.
+
+operational spec은 method의 세부 사항을 의미한다.
+
+## spec 주석에는 Operational spec을 쓸 필요없다.
+
+operational spec을 쓰게 되면 implementor가 이후 구현 변경이 쉽지 않아 지고, client는 세부사항에 의존하게 된다.
+
+따라서 operational spec은 spec이 아닌 method의 본문에 작성한다.
+
+## pre,postcondition의 강도
+
+강한 spec은 기존 spec에 비해 precondition이 약하거나, postcondition이 강한 코드를 의미한다.
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/07-designing-specs/#deterministic_vs_underdetermined_specs
+
+강한 spec은 약한 스펙을 만족 시키기때문에 대체할 수있다.
+
+적절히 약한 명세는 implementor에게 자유를, 적절히 강한 명세는 client에게 자유를 준다.
