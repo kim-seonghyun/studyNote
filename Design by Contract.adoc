@@ -1,0 +1,68 @@
+## DbC란?
+Contract : 비즈니스에서 착안한 용어이다.
+Client와 supplier가 상호 의무를 동의하는 것.
+
+프로그래밍에 적용해보면,
+소프트웨어 설계자는 검증 가능한 인터페이스 사양(contract)을 정의한다.
+이때 인터페이스 사양에는 Precondition, postcondition, invariant가 포함된다.
+
+DbC는 Contract에 의한 설계 프로그래밍
+
+## Contract 용어
+precondition : method 실행 전 참인 조건
+invariant : method 실행 중 참인 조건
+postcondition : method 실행 후 참인 조건
+
+예시를 들어 설명하겠다.
+
+spec
+```
+ /**
+ * 
+ * @param array null이 아닌 배열
+ * @return array 모든 요소의 합.
+ */
+ public int sum(int[] array);
+```
+precondition은 매개변수 array != Null
+postcondition은 array 모든 요소의 합이다.
+
+spec을 구현하면
+```
+/**
+*
+* @param array null이 아닌 배열
+* @return array 모든 요소의 합.
+*/
+public int sum(int[] array){
+     int i=0;
+     int result = 0;
+     while (i < array.length) {
+         result += array[i];
+         i++;
+     }
+     return result;
+  }
+```
+invariant는
+> result = array의 첫번째 요소부터 i번째 요소의 합과 같다.
+
+i가 0일때 result는 A[0] ~ A[0]의 합 (invariant 참)
+i가 1일때 result는 A[0] ~ A[1]의 합 (invariant 참)
+i가 array.length -1일때 result는 A[0] ~ A[array.length] -1의 합이다. (invariant 참)
+
+위 Method의 Contract를 정리하자면
+
+precondition : 매개변수 array != Null
+postcondition : array 모든 요소의 합이다.
+invariant : result = array의 첫번째 요소부터 i번째 요소의 합과 같다.
+
+
+
+## 결론
+DbC는 Contract를 사용하여 소프트웨어 모듈의 정확성에 대한 기준을 정의한다.
+
+
+참고 1: https://ocw.mit.edu/ans7870/6/6.005/s16/classes/08-avoiding-debugging/
+참고 2:https://en.wikipedia.org/wiki/Design_by_contract
+참고 3: https://math.hws.edu/javanotes/c8/s2.html
