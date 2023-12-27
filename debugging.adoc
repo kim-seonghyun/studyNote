@@ -1,0 +1,45 @@
+에러는 언제든 발생할 수 있다.
+immutable한 object를 사용하고, static checking, dynamic checking을 사용해도 피할 수 없다.
+
+그렇다면 디버깅을 어떻게 해야 효과적으로 할 수 있을까?
+
+## Reproduce the bug
+발생한 버그보다 **더 작고, 반복 가능한** 실패 테스트를 찾아라.
+이 과정이 귀찮게 느껴질수도 있다.
+하지만 에러를 수정하는동안 반복해서 실행해야 하므로 필수 과정이다.
+이러한 테스트 케이스는 에러를 처리하고 나서도 regression testing에 쓸수 있으니까 꿩먹고 알먹고라고 생각하면 되겠다.
+
+## Understand the Location and Cause of the bug
+
+확실한 해결을 위해서 버그의 원인을 찾아야한다.
+**주먹구구 방식이 아닌 과학적인 방법**을 사용해보자.
+
+I. study the data
+데이터에 대해 알기 좋은 방법중 하나는 stack trace이다.
+버그가 어디에서 발생했고 어떤 종류인지 등 많은 정보를 제공한다.
+
+II. hypothesize.
+데이터의 흐름을 그려보자.
+버그가 발생한 method 그리고 input과 output,
+method의 helper method를 그린뒤 가정을 해보면
+버그가 발생한 범위를 좁힐 수있다.
+이때 이진 탐색을 사용하면 효과적으로 범위를 줄일수 있다.
+
+III. Experiment
+프로그램 동작을 세심하게 관찰하여 버그 원인 파악하기.
+print, assert, debugger를 사용하여 내부 상태를 확인한다.
+이때 버그 수정은 참아야한다.
+두가지 이유가있는데 첫번째는 더 어려운 코드를 adhoc생성할수있기 때문. 두번째는 버그 원인을 모르면 버그를 가리는 행위에 불과하기 때문이다. 
+
+
+IV. Repeat
+위 과정을 반복하며 버그의 범위를 좁힌다.
+
+
+## 디버깅 꿀팁
+
+가설은 우선순위를 정해라. java의 라이브러리는 많은 검증을 거쳤기 때문에 나의 코드보다 튼튼할 가능성이 높다.
+
+source code, object가 최신상태인지 확인해라. 프로젝트 재컴파일 해보기
+
+참고 : https://web.mit.edu/6.005/www/fa16/classes/10-debugging/
