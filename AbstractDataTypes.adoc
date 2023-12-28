@@ -1,0 +1,132 @@
+자동차
+모든 자동차는 엑셀, 브레이크, 핸들이 있다.
+엑셀을 밟으면 가속, 브레이크를 밟으면 감속, 핸들을 돌리면 방향 전환이 된다.
+운전자는 가속하기 위해 엑셀을 밟기만 하면 된다.
+흡기 벨브, 실린더, 변속기가 어떻게 동작하는지 알 필요가 없다.
+이는 자동차 제조사들이 각자 입맛에 맞게 구현하는 것이다.
+
+Abstract Data Types : 자동차
+Data Types의 Operation : 엑셀, 브레이크, 핸들
+
+
+## Abstract?
+Abstract Data Type은 데이터 구조의 사용(엑셀, 브레이크)과
+데이터 구조의 특정 형태(자동차 내부 동작, 자동차 제조사가 구현하는 것)를 분리할수있는 강력한 아이디어이다.
+
+소프트웨어 엔지니어링의 일반적인 원칙의 한예시이다.
+모듈화, 캡슐화 등 여러 이름으로 불리고 있다.
+
+핵심개념은 **"타입"이 사용할 수 있는 "연산"에 의해 결정**된다는 것이다.
+
+
+## Classifying Types and operations
+type은 mutable, immutable로 분류할 수 있다.
+type의 operation은 다음 4가지로 분류된다.
+
+Creator : 새로운 타입의 객체 생성
+Producer : 기존 타입의 객체 생성
+Observer : Abstract Type의 object를 받아서 다른 객체를반환
+Mutator : 객체 변경
+
+기호로 요약하면
+
+Creator : t* -> T
+Producer : T+, t* -> T
+Observer: T+, t* -> T
+mutator: T+, t* -> void | t | T
+
+T는 abstract type
+t는 다른 object type
+*는 0개 이상
++는 1개 이상
+
+
+### Abstract Data example ( java )
+
+Abstract Data Type : List
+Creator : ArrayList(), LinkedList()
+Producer : Collections.unmodifiableList
+Observer : size(), get()
+Modifier : add(), remove(),addAll()
+
+
+Abstract Data Type : String
+Creator : String()
+Producer : concat()
+Observer : length, chatAt()
+Modifier : 없다! ( immutable object 이기 때문)
+
+
+## Designing an Abstract type
+Abstract Type을 설계하려면 연산을 신중하게 선택해야한다.
+연산은 간단하고, 일반적이고, 명확한 목적을 가져야 한다.
+
+예를들면 Map의 operation을 설계할때 value의 average를 구하는 메서드는 필요하지 않다.
+Map의 value type으로 정수가 아닌 String이나 다른 객체를 쓰는 경우 average를 구할 수 없기 때문이다 (특수한 경우).
+
+
+
+## Representation Indepence
+
+Abstract Data Type은 representation으로부터 독립적이어야 한다.
+
+이는 client의 코드는 Representation의 public method에만 의존성을 가져야함을 의미한다.
+만약 client 코드가 Representation의 public 인스턴스 변수에 직접 의존하게 되면, 이는 Representation 내부에 "의존"을 가지게 된다는 것으로, 추후에 representation operation 변경을 어렵게 만든다.
+
+코드 예시로 설명해보면
+
+```
+/**
+ * 음악 playList를 가지고 있다.
+ * playList는 순서를 가진다.
+ */
+class MusicPlayer{
+    // 중복은 허용되지 않는다
+    // 가,나,다 순으로 정렬된다.
+    public ArrayList<Music> playList;
+
+    /**
+     * @return 음악 목록을 반환한다. 중복이 없고 가,나,다 순으로 정렬 됐다.
+     */
+    public ArrayList<Music> getPlayList(){
+        return playList;
+    }
+}
+```
+아래는 client 코드이다.
+```
+    MusicPlayer musicPlayer = new MusicPlayer();
+    // client가 첫번째 음악에 접근
+    musicPlayer.playList.get(0);
+```
+
+representation인 MusicPlayer의 playlist Type을 HashSet으로 변경한다면
+client의 musicPlayer.playList.get(0); 코드에서 에러가 발생하게 된다.
+HashSet은 get메서드가 없기 때문이다.
+
+이 문제를 해결하기 위해 client가 getPlayList() 메서드를 사용하게 해야한다.
+
+
+```
+	MusicPlayer musicPlayer = new MusicPlayer();
+    musicPlayer.getPlayList();
+```
+
+이렇게 하면 MusicPlayer(Representation) 변경이 자유로워진다.
+```
+/**
+     * @return 음악 목록을 반환한다. 중복이 없고 가,나,다 순으로 정렬 됐다.
+     */
+    public ArrayList<Music> getPlayList(){
+        return new ArrayList(playList);
+    }
+```
+
+## Testing an Abstract Data Type
+
+Abstract Data의 input-space partition을 커버하는 테스트 케이스를 만들어야 한다.
+
+예를들어 매개변수가 int 타입의 경우
+0, 1 , 중간, 끝을 확인하면 된다.
+
+
