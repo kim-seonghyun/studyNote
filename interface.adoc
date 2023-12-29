@@ -1,0 +1,50 @@
+## Interface가 뭐야?
+
+Interface : ADT를 표현하기 유용한 언어 매커니즘
+
+interface는 client와의 Contract를 명시하는데 특화됐다.
+interface를 쓰면 좋은점은
+첫쨰! spec과 구현을 완전히 분리 할 수 있다.
+둘째! 같은 Interface를 구현하는 여러 representation이 공존 할 수있다.
+
+## subtypes?
+
+Type은 value의 집합이다.
+subtype은 SuperType의 부분집합이다.
+B가 A의 서브타입 = 모든 B는 A이다.
+모든 B의 spec은 A의 spec을 만족한다.
+그러니까 subtype은 supertype의 Spec을 구현해야한다.
+
+예를들면
+List는 ArrayList, LinkedList 등의 집합이다.
+ArrayList는 List의 부분집합이다.
+모든 ArrayList는 List이다.
+모든 ArrayList의 spec은 List의 spec을 만족한다.
+그러니까 ArrayList는 List의 spec을 구현해야 한다.
+
+### abstract barrier를 지켜라!
+
+```
+List<String> s = new ArrayList<String>();
+```
+위 코드는 abstraction barrier를 위협하는 코드이다.
+왜일까
+ADT를 조작할때 주어진 연산만 사용해야 하는데
+List의 spec에 ArrayList() 가 없기 때문이다.
+
+
+이는 factory pattern으로 해결할 수있다.
+
+주의 : 아래코드는 설명을 위해 만든 코드이며 java library에는 없는 코드이다.
+
+```
+public interface List {
+	public static List arrayTypeList(){
+		return new ArrayList();
+	}
+}
+```
+
+ADT를 표현할수있게 해주는 Interface에 대해 알아 보았다
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/14-interfaces/
