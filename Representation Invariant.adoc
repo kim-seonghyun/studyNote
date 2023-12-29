@@ -69,4 +69,5 @@ class PrimeInteger{
 }
 ```
 RI를 check하고 적용하는 책임은 구현자에게 있으므로 private하게 작성하였다.
- 
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/13-abstraction-functions-rep-invariants/#invariants
