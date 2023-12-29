@@ -1,1 +1,72 @@
 
+## ADT는 어디에 필요할까
+
+```
+	/**
+     * @param a 0보다 큰 수이면서, 소수인 값
+     * @param b a와 같다.
+     * @return 소수 a + b의 결과
+     */
+    static Long sum(int a, int b);
+```
+위의 코드에서 precondition을 대체할 방법이 있을까?
+
+이떄 ADT를 사용하면 읽기쉽고, 버그로부터 견고하게 만들 수있다.
+
+```
+	/**
+     * @return 소수 a+b의 결과
+     */
+    static Long sum(PrimeInteger a, PrimeInteger)
+```
+ 
+PrimeInteger라는 ADT를 설계했다. ADT의 이름으로 코드 이해가 쉬워지고, ADT 내부에서 invariant check가 이루어지기 때문에 버그로 부터 견고해 졌다.
+
+
+## Represent Invariant
+
+ADT가 Represent invariant를 유지하면 코드에 대한 추론이 쉬워진다.
+그렇다면 Represent Invarint는 무엇일까
+Represent가 유효한 상태를 유지하기 위해 만족해야 하는 규칙이다.
+
+예를 들면 RI가 "0보다 큰 수이면서, 소수인 값" 이라면
+RI를 만족하는 값이 입력될때 RI가 참이 되고, Represent가 유효한 상태를 유지하게 된다.
+
+## RI가 위험하다구?
+rep exposure : rep가 client에게 노출되는것
+ I. ADT의 field가 public : client가 직접 접근하게되면 invariant를 보장할 수없고, Represent independence도 위협받는다. 따라서 ADT의 field는 private하게 사용한다.
+ II. Mutable한 object의 reference를 client에게 반환 할때 : client가 object를 변경할 수있기때문에 이또한 invariant를 보장할 수 없다. Immutable한 object 바꿔서 return 하거나 처음부터 immutable한 object를 사용한다.
+ 
+## RI 만들기
+
+object의 invariant를 유지하기 위해서
+ I. 객체 초기상태의 invariant 참
+ II. 객체에 대한 모든 변경이 invariant를 참으로 유지
+ 
+ADT에 적용해보면
+ I. Creator, Producer 연산은 새로운 object instance에 RI 설정
+ II. Mutator, Observer 연산은 RI 유지
+ III. rep exposure가 존재하지 않음
+
+위 조건을 만족하면 ADT에서 RI는 참이 된다.
+
+## RI check
+
+runtime에 RI를 assert하면 버그를 미리 발견 할 수있다.
+
+모든 Operation의 끝에 RI check를 실행하면 된다.
+
+아래는 RI check code이다.
+
+```
+class PrimeInteger{
+    private int a;
+	
+    // check RI
+    private void checkRep(){
+        assert a > 0 && isPrime(a);
+    }
+}
+```
+RI를 check하고 적용하는 책임은 구현자에게 있으므로 private하게 작성하였다.
+ 
