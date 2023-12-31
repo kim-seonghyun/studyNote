@@ -1,1 +1,42 @@
+10kg 원판 2개, 20kg 원판 1개, 5kg원판 4개
+모두 같은 무게 라는것을 어떻게 확인할수 있을까?
 
+## Three ways to Regard Equality
+
+
+1. abstract function을 사용한 equality
+20kg *1, 5kg * 4 모두 같은 20kg이라는 추상값을 가진다. 
+두 개체가 같은 추상값을 가지면 동등하다고 볼 수 있다.
+f(20kg*1) = f(5kg *4)
+
+2. 관계를 사용한 equality
+동등 관계라는 개념을 사용한다
+반사성, 대칭성, 전이성을 만족하면 동등하다고 할 수 있다.
+
+3. observation을 이용한 equality
+observer연산을 호출하여 구분한다.
+예를 들면 원소 개수를 세는 cardinality(), 소속여부를 확인하는 contains()가 있다.
+
+## == vs equals()
+
+== 은 reference를 비교한다.
+equals()는 object간의 Equality를 비교하는데 
+Object.equals()의 기본코드는 참조를 비교하므로 
+@Override를 통해 메서드 재정의가 필요하다.
+
+매개변수로 Object가 입력됐을때 Object.equals()가 동작한다.
+따라서 instance of를 사용하여 매개변수의 타입을 확인해야한다.
+
+## The Object Contract
+
+1. 등가 관계를 정의 할 것
+2. 일관성이 있을 것
+3. x.equals(null)은 false를 반환 할 것
+4. hashCode는 동일한 객체에 동일한 해쉬코드 return
+
+
+## Equality of Mutable Types
+
+두 alias가 같은 object를 참고하고 있는지 확인하는 행동적 동등성을 확인해야한다.
+
+참고 : https://ocw.mit.edu/ans7870/6/6.005/s16/classes/15-equality/
