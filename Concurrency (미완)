@@ -1,0 +1,33 @@
+Concurrency : 여러 계산이 동시에 진행 되는것
+
+## Process and Thread
+process : 실행중인 프로그램의 인스턴스, 가상 컴퓨터
+thread : 실행중인 프로그램 내부의 제어 위치, 동일 프로세스 내부의 다른 스레드와 메모리를 공유, 가상 프로세스
+time-slicing : 프로세서보다 thread가 많은경우 thread를 전환하면서 처리.
+
+## race condition
+postcondition, invariant가 연산할때 상대적인 타이밍에 따라 달라진다.
+
+## Current Programming의 2가지 모델
+
+1. shared Memory : memory상의 shared object를 읽고 쓴다.
+
+2개의 thread에서 같은 object에 동시 접근할 때 문제가 된다.
+
+```
+a = a + 1
+```
+위 코드는 원자적으로 보이기때문에 race condition으로 부터 안전할거같다
+
+하지만 이를 저수준 코드에서 살펴보면
+a를 가져옴
+a에 1을 더함
+a에 계산 결과를 입력함
+3개의 연산으로 나뉘어지는것을 알 수 있다.
+
+이 연산들이 비 순차적으로 쪼개서 실행되면(interleaving) 예상하지 못한 처리결과를 얻을 수있다. 
+
+2. Message passing
+object를 module로 만들어서 message로 상호 작용 하는것
+
+참고 : https://web.mit.edu/6.005/www/fa16/classes/19-concurrency/
