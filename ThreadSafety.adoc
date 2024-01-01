@@ -1,0 +1,29 @@
+## ThreadSafe
+Thread가 실행되는 방식에 관계없이 호출 코드에 추가적인 조건을 요구하지 않고 올바르게 동작하는것(rep invariant 유지)
+
+## ThreadSafety 3가지 전략
+
+1. confinement(제한)
+대상 Thread를 단일 Thread로 제한
+
+Local variable은 독립적으로 사용가능하다.
+
+전역변수는 단 하나의 Thread만 사용해야 한다.
+필요한 경우가 아니면 전역변수를 안쓰는게 낫다.
+
+2. Immutability
+
+Immutable object는 보통 안전하다.
+하지만 "캐싱"같은 숨겨진 돌연변이가 있으면 안전하지 않다.
+locks를 사용하여 thread safety를 확보해야한다.
+
+3. Using Threadsafe Data Types
+
+Thread safe Collection가 좋은 예시이다.
+Colletion을 immutable object로 만들어주는 동기화 wrapper method를 사용하면 된다.
+
+## Serializability
+
+interleaving 없이 연산 결과가 호출된 순서와 동일하게 return
+
+참고 : https://web.mit.edu/6.005/www/fa16/classes/20-thread-safety/#avoid_global_variables
