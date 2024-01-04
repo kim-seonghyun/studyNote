@@ -1,0 +1,130 @@
+## Spring core → spring 프레임워크의 중심적인 부분
+
+Spring frame work의 핵심적인 기능 IoC 컨테이너(Bean 관리, 객체의 생성, DI 처리) 제공
+
+나머지 Spring MVC, Spring Data, Spring Security는 Spring Core위에서 작동
+
+DI, IoC제공
+
+IoC : 객체의 생성, 생명주기를 프레임워크가 담당하도록 함.
+
+DI : 의존성을 외부에서 주입,
+
+Container : object, data 등을 담고 관리하는 공간
+
+1. bean 설정 정보 읽기
+
+```java
+@Configuration
+public class AppConfig {
+    @Bean
+    public Service service() {
+        return new ServiceImpl();
+    }
+}
+```
+
+1. object 생성과 DI
+
+```java
+@Service
+public class ServiceImpl implements Service {
+    private final Repository repository;
+
+    public ServiceImpl(Repository repository) {
+        this.repository = repository;
+    }
+}
+```
+
+1. object 생명 주기 관리 ( @PostConstruct init , @PreDestroy destroy() )
+
+```java
+@Service
+public class ServiceImpl implements Service {
+    @PostConstruct
+    public void init() {
+        // 객체 생성 후 실행할 로직
+    }
+
+    @PreDestroy
+    public void destroy() {
+        // 객체 소멸 전 실행할 로직
+    }
+}
+```
+
+## Spring MVC : Spring Framework의 일부, MVC 디자인 패턴 구현
+
+1. Model : 비즈니스로직, 데이터 담당, 결과를 view에 전달
+2. view : 사용자에 보여지는 부분 담당, 모델로 부터 받은 데이터를 사용자에게 보여주기 위한 형태로 변환하여 표현
+3. Controller : 사용자의 요청을 받아 적절한 모델 호출, 결과를 view에 전달해줌 (ViewResolver 사용)
+
+```java
+@Controller
+public class MyController {
+
+    @RequestMapping("/hello")
+    public String hello(Model model) {
+        model.addAttribute("message", "Hello Spring MVC!");
+        return "hello";
+    }
+}
+```
+
+## Spring JPA : Java Persistence API를 Spring에서 쉽게 쓸수있도록 지원하는 모듈
+
+DAO, Repository를 구현하는데 유용한 기능 제공
+
+DB작업을 좀더 객체 지향적으로 수행할 수있도록 지원
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+```
+
+## Spring Security : Spring frame work에서 제공하는 보안 관련 모듈
+
+인증, 권한 부여등 보안 기능 제공
+
+1. 인증 : 사용자의 신원 확인, OAuth, LDAP 등 다양한 인증 방식 지원
+2. 권한 부여 : 인증된 사용자가 어떤 자원에 접근할 수있는지 결정
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+}
+```
+
+Spring Boot : Spring 애플리케이션을 빠르고 쉽게 개발할수 있도록 도와주는 도구
+
+1. 자동 설정 
+2. 내장 서버 제공 : servlet container를 내장하고 있음.
+3. 의존성 관리 
+4. 다양한 플러그인 제공
+5. Actuator : 애플리케이션의 상태 모니터링 쌉가능
+
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
